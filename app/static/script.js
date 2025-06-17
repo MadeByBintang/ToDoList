@@ -1,6 +1,6 @@
 function filterTodos(filter) {
   const todos = document.querySelectorAll(".todo");
-  todos.forEach(todo => {
+  todos.forEach((todo) => {
     const isCompleted = todo.classList.contains("completed");
     if (
       filter === "all" ||
