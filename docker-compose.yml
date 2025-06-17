@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: todolist_web
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app
+    env_file:
+      - ./app/.env
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    container_name: todolist_db
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - todolist_data:/var/lib/postgresql/data
+
+volumes:
+  todolist_data:

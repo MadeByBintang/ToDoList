@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To Do List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>My To Do List</h1>
+  </header>
+
+  <form action="{{ '/edit/' ~ todo_to_edit[0] if todo_to_edit else '/add' }}" method="post">
+    <input type="text" name="task" class="todo-input" placeholder="Enter a task"
+           value="{{ todo_to_edit[1] if todo_to_edit else '' }}" required />
+    <button class="todo-button" type="submit">
+      {% if todo_to_edit %}
+      <i class="fas fa-save"></i>
+      {% else %}
+      <i class="fas fa-plus-circle fa-lg"></i>
+      {% endif %}
+    </button>
+    <div class="select">
+      <select onchange="filterTodos(this.value)" class="filter-todo">
+        <option value="all">All</option>
+        <option value="completed">Completed</option>
+        <option value="incomplete">Incomplete</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="todo-container">
+    <ul class="todo-list">
+      {% for id, task, completed in todos %}
+      <li class="todo {% if completed %}completed{% endif %}">
+        <span class="todo-item">{{ task }}</span>
+        <div>
+          <a href="/complete/{{ id }}" class="complete-btn"><i class="fas fa-check-circle"></i></a>
+          <a class="edit-btn" href="/?edit={{ id }}"><i class="fas fa-edit"></i></a>
+          <a href="/delete/{{ id }}" class="trash-btn"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
